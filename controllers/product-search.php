@@ -26,7 +26,7 @@ if(isset($_GET["term"])) {
     $product = $proizvod->get_product_by_name($product_name);
     if($product !== "0"){
         $row = $product -> fetch_object();
-    echo json_encode(array("Naziv"=>$row->Naziv,"Stanje"=>$row -> Stanje,"Cena"=>$row -> Cena));
+    echo json_encode(array("Naziv"=>$row->Naziv,"Cena"=>$row -> Cena));
 
     }else{
 
