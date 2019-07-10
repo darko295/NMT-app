@@ -1,0 +1,23 @@
+.nav>li>a:focus, .nav>li>a:hover {
+    text-decoration: none;
+    background-color: #333333 !important;
+}
+
+body{
+    font-family: Arail, sans-serif;
+}
+/* Formatting search box */
+
+row1 input[type="text"]{
+    height: 18px;
+    padding: 5px 10px;
+    border: 1px solid #CCCCCC;
+    font-size: 14px;
+}
+.result{
+    position: relative;
+    z-index: 999;
+    top: 70%;
+}
+
+/* Formatting result items */
