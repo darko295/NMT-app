@@ -201,6 +201,10 @@ $(document).ready(function(){
     $(document).on('click', '.btn_remove', function(){
         var button_id = $(this).attr("id");
         $('#row'+button_id+'').remove();
+        var iznos = $('#iznos'+i).val();
+        var uk_iznos = $('#ukupan-iznos').val();
+        uk_iznos = uk_iznos - iznos;
+        $('#ukupan-iznos').val(uk_iznos);
         i--;
     });
 

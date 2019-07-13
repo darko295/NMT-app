@@ -62,6 +62,5 @@ function prikazi_stavke(btn_id) {
             }
         }
     });
-
-
 }
+

@@ -1,10 +1,9 @@
 <?php
 
-include(dirname(__FILE__) . "/../public/connection.php");
-include(dirname(__FILE__) . "/../class/stavkaracuna.php");
-include(dirname(__FILE__) . "/../class/prodavac.php");
-//include "../class/stavkaracuna.php";
-//include "../class/prodavac.php";
+include_once(dirname(__FILE__) . "/../public/connection.php");
+include_once(dirname(__FILE__) . "/../class/stavkaracuna.php");
+include_once(dirname(__FILE__) . "/../class/prodavac.php");
+
 
 class racun
 {
@@ -43,7 +42,7 @@ class racun
 
     public function  get_all_bills(){
         global $mysqli;
-        $sql = "SELECT np.Naziv as NacinPlacanja, r.RacunID, r.UkupanIznos, r.DatumKreiranja,r.Storniran
+        $sql = "SELECT np.Naziv as NacinPlacanja, r.RacunID, r.UkupanIznos, r.DatumKreiranja,r.Storniran, r.PoslednjeAzuriranje
                 FROM nacinplacanja np JOIN racun r ON np.NacinPlacanjaID=r.NacinPlacanjaID
                 ORDER BY r.DatumKreiranja DESC";
 
@@ -65,7 +64,8 @@ class racun
 
     public function cancel_bill($bill_id){
         global $mysqli;
-        $sql = "UPDATE racun SET Storniran = 1  WHERE RacunID = '" . $bill_id . "'";
+        $update_time = date("Y-m-d H:i:s");
+        $sql = "UPDATE racun SET Storniran = 1,PoslednjeAzuriranje='".$update_time."'  WHERE RacunID = '" . $bill_id . "'";
         if($mysqli->query($sql)){
             if ($mysqli->affected_rows == 1) {
                 echo "1";
@@ -75,6 +75,24 @@ class racun
         }else{
         echo "0";
         }
+    }
+
+
+
+    public function update_total($bill_id, $suma){
+        global $mysqli;
+        $update_time = date("Y-m-d H:i:s");
+        $sql = "UPDATE racun SET UkupanIznos ='".$suma."',PoslednjeAzuriranje='".$update_time."'  WHERE RacunID = '" . $bill_id . "'";
+        if($mysqli->query($sql)){
+            if ($mysqli->affected_rows == 1) {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+
     }
 
 }

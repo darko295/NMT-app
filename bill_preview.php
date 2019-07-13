@@ -29,6 +29,111 @@ if (isset($_SESSION['username'])) {
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/js/bill_preview.js"></script>
 
+    <script>
+        function obrisi_stavku(btn_id)
+        {
+            var bill_id = btn_id.split("-")[1];
+            var bill_item_id = btn_id.split("-")[2];
+            var count = $('#stavke-table tr').length;
+            count--;
+            if(count === 1){
+                $.ajax({
+                    type: "GET",
+                    url: "controllers/delete.php ",
+                    data: {
+                        bill_id: bill_id
+                    },
+                    success: function (data) {
+                        if(data === "1"){
+                            alert("Racun je uspesno obrisan!");
+                            $("#row-"+bill_id).remove();
+                            location.reload();
+                        }else{
+                            alert("Došlo je do greške prilikom brisanja računa!");
+                        }
+                    }
+                });
+            }else{
+                $.ajax({
+                    type: "GET",
+                    url: "controllers/delete-bill-item.php ",
+                    data: {
+                        bill_id: bill_id,
+                        bill_item_id:bill_item_id
+                    },
+                    success: function (data) {
+                        if(data === "1"){
+                            alert("Stavka "+bill_item_id+ " računa "+ bill_id +" je uspesno obrisana!");
+                            $("#"+bill_id+"-"+bill_item_id).remove();
+
+                        }else{
+                            alert("Došlo je do greške prilikom brisanja računa!");
+                        }
+                    }
+                });
+
+
+            }
+
+
+        }
+
+
+        $(document).on('click', '.row_data', function(event)
+        {
+            event.preventDefault();
+
+            //make div editable
+            $(this).closest('div').attr('contenteditable', 'true');
+            //add bg css
+            $(this).addClass('bg-warning').css('padding','5px');
+
+            $(this).focus();
+        });
+
+        $(document).on('focusout', '.row_data', function(event)
+        {
+            event.preventDefault();
+
+            var row_id = $(this).closest('tr').attr('id');
+
+            var row_div = $(this)
+                .removeClass('bg-warning') //add bg css
+                .css('padding','');
+
+            var bill_id = row_id.split("-")[0];
+            var bill_item_id = row_id.split("-")[1];
+            var kolicina = $(this).closest('tr').find("td > #kolicina").html();
+            var cena = $(this).closest('tr').find("td > #cena").html();
+            var iznos = kolicina * cena;
+            $(this).closest('tr').find("td > #iznos").html(iznos);
+
+            $.ajax({
+                type: "GET",
+                url: "controllers/update-bill-item.php ",
+                data: {
+                    bill_id: bill_id,
+                    bill_item_id:bill_item_id,
+                    kolicina:kolicina,
+                    iznos:iznos
+                },
+                success: function (data) {
+                    if(data === "1"){
+                        alert("Stavka "+bill_item_id+ " računa "+ bill_id +" je uspesno ažurirana!");
+
+                    }else{
+                        alert("Došlo je do greške prilikom ažuriranja računa!");
+                    }
+                }
+            });
+
+
+        });
+
+
+    </script>
+
+
 </head>
 
 <body>
@@ -98,11 +203,10 @@ if (isset($_SESSION['username'])) {
                 <tr>
                     <th>Račun ID</th>
                     <th>Datum kreiranja</th>
+                    <th>Poslednje Ažuriranje</th>
                     <th>Način plaćanja</th>
                     <th>Ukupan iznos</th>
-                    <th>Storniraj</th>
-                    <th>Obriši</th>
-                    <th>Prikaži stavke</th>
+
                 </tr>
                         <?php
                             while ($row = $result->fetch_object()) {
@@ -111,6 +215,13 @@ if (isset($_SESSION['username'])) {
 
                     <td><?php echo $row -> RacunID; ?></td>
                     <td><?php echo $row -> DatumKreiranja; ?> </td>
+                    <?php
+                    if(is_null($row -> PoslednjeAzuriranje)){
+                        ?>
+                        <td><?php echo "---"; ?> </td>
+                    <?php }else{ ?>
+                        <td><?php echo $row -> PoslednjeAzuriranje; ?> </td>
+                    <?php } ?>
                     <td><?php echo $row -> NacinPlacanja; ?></td>
                     <td><?php echo $row -> UkupanIznos. " din."; ?></td>
 
@@ -144,17 +255,26 @@ if (isset($_SESSION['username'])) {
     </div>
 
 <!--    MODAL    -->
-    <div class="container">
+
         <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content" id="table-div"></div>
             </div>
         </div>
     </div>
-</div>
+
 
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(function(){
+    $("#myModal").on('hide.bs.modal', function () {
+        //alert("Reagujem");
+        location.reload();
+    });
+    });
+</script>
 
 </body>
 
