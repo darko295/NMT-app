@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2019 at 10:19 PM
+-- Generation Time: Jul 14, 2019 at 10:25 PM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.6
 
@@ -70,7 +70,7 @@ CREATE TABLE `prodavac` (
 --
 
 INSERT INTO `prodavac` (`ZaposleniID`, `Username`, `Password`, `Active`, `ProdavnicaID`) VALUES
-(1, 'pera123', 'pera123', 0, 1),
+(1, 'pera123', 'pera123', 1, 1),
 (2, 'mika', 'mika000', 0, 1);
 
 -- --------------------------------------------------------
@@ -131,6 +131,7 @@ CREATE TABLE `racun` (
   `RacunID` int(100) NOT NULL,
   `UkupanIznos` decimal(50,0) NOT NULL,
   `DatumKreiranja` datetime NOT NULL,
+  `PoslednjeAzuriranje` datetime DEFAULT NULL,
   `Storniran` tinyint(1) NOT NULL DEFAULT 0,
   `ZaposleniID` int(100) NOT NULL,
   `NacinPlacanjaID` int(100) NOT NULL
@@ -140,15 +141,14 @@ CREATE TABLE `racun` (
 -- Dumping data for table `racun`
 --
 
-INSERT INTO `racun` (`RacunID`, `UkupanIznos`, `DatumKreiranja`, `Storniran`, `ZaposleniID`, `NacinPlacanjaID`) VALUES
-(23, '2300', '2019-07-09 22:32:01', 0, 1, 1),
-(25, '1200', '2019-07-09 22:45:06', 0, 1, 1),
-(26, '110', '2019-07-09 22:46:52', 0, 1, 1),
-(28, '300', '2019-07-09 22:55:53', 0, 2, 2),
-(29, '100', '2019-07-09 23:24:17', 1, 2, 1),
-(30, '520', '2019-07-10 21:15:44', 0, 1, 2),
-(31, '110', '2019-07-10 21:18:57', 1, 1, 1),
-(32, '459', '2019-07-10 21:45:56', 1, 1, 1);
+INSERT INTO `racun` (`RacunID`, `UkupanIznos`, `DatumKreiranja`, `PoslednjeAzuriranje`, `Storniran`, `ZaposleniID`, `NacinPlacanjaID`) VALUES
+(25, '267', '2019-07-09 22:45:06', '2019-07-13 15:49:20', 0, 1, 1),
+(26, '110', '2019-07-09 22:46:52', NULL, 0, 1, 1),
+(29, '267', '2019-07-09 23:24:17', '2019-07-13 14:58:26', 1, 2, 1),
+(32, '258', '2019-07-10 21:45:56', '2019-07-13 14:56:55', 1, 1, 1),
+(34, '1068', '2019-07-13 12:32:21', NULL, 0, 1, 1),
+(35, '757', '2019-07-13 12:32:57', '2019-07-13 15:01:06', 0, 1, 1),
+(36, '473', '2019-07-13 14:48:38', '2019-07-13 16:16:34', 1, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -169,16 +169,16 @@ CREATE TABLE `stavkaracuna` (
 --
 
 INSERT INTO `stavkaracuna` (`RacunID`, `RBStavke`, `Kolicina`, `Iznos`, `ProizvodID`) VALUES
-(23, 1, 23, '2300', 1),
-(25, 1, 12, '1200', 1),
+(25, 1, 3, '267', 1),
 (26, 1, 1, '110', 2),
-(28, 1, 3, '300', 1),
-(29, 1, 1, '100', 1),
-(30, 1, 2, '220', 2),
-(30, 2, 3, '300', 1),
-(31, 1, 1, '110', 2),
-(32, 1, 1, '129', 4),
-(32, 2, 3, '330', 9);
+(29, 1, 3, '267', 1),
+(32, 1, 2, '258', 4),
+(34, 1, 12, '1068', 1),
+(35, 1, 2, '298', 3),
+(35, 2, 1, '149', 3),
+(35, 5, 2, '310', 7),
+(36, 1, 3, '333', 2),
+(36, 2, 1, '140', 8);
 
 -- --------------------------------------------------------
 
@@ -311,7 +311,7 @@ ALTER TABLE `proizvod`
 -- AUTO_INCREMENT for table `racun`
 --
 ALTER TABLE `racun`
-  MODIFY `RacunID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `RacunID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `vrstaproizvoda`
