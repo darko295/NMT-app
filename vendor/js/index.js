@@ -49,19 +49,14 @@ $(document).ready(function(){
             return;
         }//else{
 
-        rb_stavke = i;
-        rb_stavke++;
-        if (rb_stavke === 6){
-            alert("Maksimalno je moguce dodati 5 stavki po racunu!");
-            return;
-        }
+
 
         if (i > 0){
             for (j = 1; j <= i; j++){
-                var proizvod = $("#proizvod"+j).val();
-                var cena = $("#cena"+j).val();
-                var kolicina = $("#kolicina"+j).val();
-                var iznos = $("#iznos"+j).val();
+                var proizvod = $("#proizvod-"+j).val();
+                var cena = $("#cena-"+j).val();
+                var kolicina = $("#kolicina-"+j).val();
+                var iznos = $("#iznos-"+j).val();
                 if(proizvod === "" || cena === "" || kolicina === "" || iznos === ""){
                     alert("Sva polja za prethodnu stavku moraju biti popunjena!");
                     return;
@@ -85,18 +80,17 @@ $(document).ready(function(){
                 }else{
 
                     var vals = JSON.parse(data);
-
                     i++;
                     $('#dynamic_field_1').append('<tr id="row'+i+'">' +
-                        '<td><input type="text" id="proizvod'+i+'" name="proizvod'+i+'" placeholder="Proizvod" class="form-control name_list" /></td>' +
-                        '<td><input type="number" min="0" id="kolicina'+i+'" name="kolicina'+i+'" placeholder="Kolicina" class="form-control name_list" /></td>' +
-                        '<td><input id="cena'+i+'" readonly  type="number" name="cena'+i+'" placeholder="Cena" class="form-control name_list" /></td>' +
-                        '<td><input  type="number" readonly id="iznos'+i+'" name="iznos'+i+'" placeholder="Iznos" class="form-control name_list" /></td>' +
+                        '<td><input type="text" id="proizvod-'+i+'" name="proizvod'+i+'" placeholder="Proizvod" class="form-control name_list" /></td>' +
+                        '<td><input type="number" min="0" id="kolicina-'+i+'" name="kolicina'+i+'" placeholder="Kolicina" class="kolicina form-control name_list" /></td>' +
+                        '<td><input id="cena-'+i+'" readonly  type="number" name="cena'+i+'" placeholder="Cena" class="form-control name_list" /></td>' +
+                        '<td><input  type="number" readonly id="iznos-'+i+'" name="iznos'+i+'" placeholder="Iznos" class="iznos form-control name_list" /></td>' +
                         '<td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
-                    $("#proizvod"+i).val(vals.Naziv);
-                    $("#cena"+i).val(vals.Cena);
+                    $("#proizvod-"+i).val(vals.Naziv);
+                    $("#cena-"+i).val(vals.Cena);
                     $("#proizvod").val("");
-                    $("#proizvod"+i).attr('readonly', true);
+                    $("#proizvod-"+i).attr('readonly', true);
                 }
             }
         });
@@ -104,116 +98,63 @@ $(document).ready(function(){
 
     });
 
-    $(document).on('change', '#kolicina1', function(){
-        var cena = $("#cena1").val();
+    $(document).on('change', '.kolicina', function(){
+        var input_id = $(this).attr('id');
+        var id = input_id.split("-")[1];
+        //alert(id);
+        var cena = $("#cena-"+id).val();
         var kolicina = $(this).val();
         var iznos = cena * kolicina;
 
-        $('#iznos1').val(iznos);
-
+        $('#iznos-'+id).val(iznos);
+        console.log("I:"+i);
         if (i > 0){
             var ukupan_iznos = 0;
             for (j = 1; j <= i; j++){
-                var iznos_stavke = $("#iznos"+j).val();
-                iznos_stavke = parseInt(iznos_stavke);
-                ukupan_iznos = ukupan_iznos + iznos_stavke;
+                if($('#iznos-'+j).length && $('#iznos-'+j).val().length){
+                    var iznos_stavke = $("#iznos-"+j).val();
+                    iznos_stavke = parseInt(iznos_stavke);
+                    ukupan_iznos = ukupan_iznos + iznos_stavke;
+                }
             }
             $("#ukupan-iznos").val(ukupan_iznos);
         }
 
 
-
-    });
-    $(document).on('change', '#kolicina2', function(){
-        var cena = $("#cena2").val();
-        var kolicina = $(this).val();
-        var iznos = cena * kolicina;
-
-        $('#iznos2').val(iznos);
-
-        if (i > 0){
-            var ukupan_iznos = 0;
-            for (j = 1; j <= i; j++){
-                var iznos_stavke = $("#iznos"+j).val();
-                iznos_stavke = parseInt(iznos_stavke);
-                ukupan_iznos = ukupan_iznos + iznos_stavke;
-            }
-            $("#ukupan-iznos").val(ukupan_iznos);
-        }
-
-    });
-    $(document).on('change', '#kolicina3', function(){
-        var cena = $("#cena3").val();
-        var kolicina = $(this).val();
-        var iznos = cena * kolicina;
-
-        $('#iznos3').val(iznos);
-
-        if (i > 0){
-            var ukupan_iznos = 0;
-            for (j = 1; j <= i; j++){
-                var iznos_stavke = $("#iznos"+j).val();
-                iznos_stavke = parseInt(iznos_stavke);
-                ukupan_iznos = ukupan_iznos + iznos_stavke;
-            }
-            $("#ukupan-iznos").val(ukupan_iznos);
-        }
-
-    });
-    $(document).on('change', '#kolicina4', function(){
-        var cena = $("#cena4").val();
-        var kolicina = $(this).val();
-        var iznos = cena * kolicina;
-
-        $('#iznos4').val(iznos);
-
-        if (i > 0){
-            var ukupan_iznos = 0;
-            for (j = 1; j <= i; j++){
-                var iznos_stavke = $("#iznos"+j).val();
-                iznos_stavke = parseInt(iznos_stavke);
-                ukupan_iznos = ukupan_iznos + iznos_stavke;
-            }
-            $("#ukupan-iznos").val(ukupan_iznos);
-        }
-
-    });
-    $(document).on('change', '#kolicina5', function(){
-        var cena = $("#cena5").val();
-        var kolicina = $(this).val();
-        var iznos = cena * kolicina;
-
-        $('#iznos5').val(iznos);
-
-        if (i > 0){
-            var ukupan_iznos = 0;
-            for (j = 1; j <= i; j++){
-                var iznos_stavke = $("#iznos"+j).val();
-                iznos_stavke = parseInt(iznos_stavke);
-                ukupan_iznos = ukupan_iznos + iznos_stavke;
-            }
-            $("#ukupan-iznos").val(ukupan_iznos);
-        }
 
     });
 
 
     $(document).on('click', '.btn_remove', function(){
+
         var button_id = $(this).attr("id");
+        var iznos = $('#iznos-'+button_id).val();
+        console.log("REMOVED IZNOS: "+iznos);
         $('#row'+button_id+'').remove();
-        var iznos = $('#iznos'+i).val();
         var uk_iznos = $('#ukupan-iznos').val();
         uk_iznos = uk_iznos - iznos;
         $('#ukupan-iznos').val(uk_iznos);
-        i--;
+        //i--;
     });
 
     $('#submit').click(function(){
         var total = $("#ukupan-iznos").val();
-        if(total === ""){
+        if(total === "" || total === "0"){
             alert("Morate dodati barem jednu stavku!");
             return;
         }
+
+        for (j = 1; j <= i; j++){
+            if($('#kolicina-'+j).length && $('#kolicina-'+j).val().length){
+                var value = $('#kolicina-'+j).val();
+                if(value === "" || parseInt(value) <= 0){
+                    alert("Neko od polja sa količinom je prazno ili u lošem formatu!");
+                    return;
+                }
+
+            }
+        }
+
         var payment_option = $("#nacin-placanja").val();
         console.log($("#bill-items").serializeArray());
         $.ajax({
@@ -226,14 +167,10 @@ $(document).ready(function(){
             },
             success:function(data)
             {
-                alert(data);
-                $('#bill-items').trigger("reset");
-                $('#1').trigger('click');
-                $('#2').trigger('click');
-                $('#3').trigger('click');
-                $('#4').trigger('click');
-                $('#5').trigger('click');
+                alert("Račun je uspešno dodat!");
+                $("#bill-items").empty();
                 $('#ukupan-iznos').val("");
+                location.reload();
             }
         });
     });
