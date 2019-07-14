@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2019 at 12:29 AM
+-- Generation Time: Jul 15, 2019 at 12:33 AM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.6
 
@@ -70,7 +70,7 @@ CREATE TABLE `prodavac` (
 --
 
 INSERT INTO `prodavac` (`ZaposleniID`, `Username`, `Password`, `Active`, `ProdavnicaID`) VALUES
-(1, 'pera123', 'pera123', 0, 1),
+(1, 'pera123', 'pera123', 1, 1),
 (2, 'mika', 'mika000', 0, 1);
 
 -- --------------------------------------------------------
