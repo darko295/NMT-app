@@ -70,7 +70,7 @@ CREATE TABLE `prodavac` (
 --
 
 INSERT INTO `prodavac` (`ZaposleniID`, `Username`, `Password`, `Active`, `ProdavnicaID`) VALUES
-(1, 'pera123', 'pera123', 1, 1),
+(1, 'pera123', 'pera123', 0, 1),
 (2, 'mika', 'mika000', 0, 1);
 
 -- --------------------------------------------------------
