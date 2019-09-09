@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 09, 2019 at 08:45 PM
+-- Generation Time: Jul 15, 2019 at 12:33 AM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.6
 
@@ -71,8 +71,7 @@ CREATE TABLE `prodavac` (
 
 INSERT INTO `prodavac` (`ZaposleniID`, `Username`, `Password`, `Active`, `ProdavnicaID`) VALUES
 (1, 'pera123', 'pera123', 0, 1),
-(2, 'mika', 'mika000', 0, 1),
-(3, 'marija', 'marija99', 0, 2);
+(2, 'mika', 'mika000', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -92,8 +91,7 @@ CREATE TABLE `prodavnica` (
 --
 
 INSERT INTO `prodavnica` (`ProdavnicaID`, `Naziv`, `Adresa`, `Mesto`) VALUES
-(1, 'NMT-1', 'Spanskih boraca 23', 'Beograd'),
-(2, 'NMT-2', 'Vojvode Stepe 47', 'Beograd');
+(1, 'NMT 1', 'Spanskih boraca 23', 'Beograd');
 
 -- --------------------------------------------------------
 
@@ -146,8 +144,8 @@ CREATE TABLE `racun` (
 INSERT INTO `racun` (`RacunID`, `UkupanIznos`, `DatumKreiranja`, `PoslednjeAzuriranje`, `Storniran`, `ZaposleniID`, `NacinPlacanjaID`) VALUES
 (25, '267', '2019-07-09 22:45:06', '2019-07-13 15:49:20', 0, 1, 1),
 (26, '110', '2019-07-09 22:46:52', NULL, 0, 1, 1),
-(29, '445', '2019-07-09 23:24:17', '2019-09-08 10:31:33', 1, 2, 1),
-(32, '1290', '2019-07-10 21:45:56', '2019-09-07 13:57:27', 1, 1, 1),
+(29, '267', '2019-07-09 23:24:17', '2019-07-13 14:58:26', 1, 2, 1),
+(32, '258', '2019-07-10 21:45:56', '2019-07-13 14:56:55', 1, 1, 1),
 (34, '1068', '2019-07-13 12:32:21', NULL, 0, 1, 1),
 (35, '757', '2019-07-13 12:32:57', '2019-07-13 15:01:06', 0, 1, 1),
 (36, '473', '2019-07-13 14:48:38', '2019-07-13 16:16:34', 1, 1, 2),
@@ -157,9 +155,7 @@ INSERT INTO `racun` (`RacunID`, `UkupanIznos`, `DatumKreiranja`, `PoslednjeAzuri
 (40, '555', '2019-07-15 00:19:20', NULL, 0, 1, 1),
 (41, '462', '2019-07-15 00:21:22', NULL, 0, 1, 1),
 (42, '333', '2019-07-15 00:22:16', NULL, 0, 1, 1),
-(43, '2675', '2019-07-15 00:22:51', '2019-09-08 12:18:52', 0, 3, 2),
-(44, '903', '2019-09-08 11:13:26', '2019-09-08 12:18:36', 0, 3, 1),
-(45, '250', '2019-09-09 19:24:11', NULL, 0, 1, 1);
+(43, '3515', '2019-07-15 00:22:51', '2019-07-15 00:24:48', 0, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -182,8 +178,8 @@ CREATE TABLE `stavkaracuna` (
 INSERT INTO `stavkaracuna` (`RacunID`, `RBStavke`, `Kolicina`, `Iznos`, `ProizvodID`) VALUES
 (25, 1, 3, '267', 1),
 (26, 1, 1, '110', 2),
-(29, 1, 5, '445', 1),
-(32, 1, 10, '1290', 4),
+(29, 1, 3, '267', 1),
+(32, 1, 2, '258', 4),
 (34, 1, 12, '1068', 1),
 (35, 1, 2, '298', 3),
 (35, 2, 1, '149', 3),
@@ -207,10 +203,7 @@ INSERT INTO `stavkaracuna` (`RacunID`, `RBStavke`, `Kolicina`, `Iznos`, `Proizvo
 (43, 4, 1, '134', 5),
 (43, 5, 4, '620', 7),
 (43, 6, 4, '516', 4),
-(43, 7, 5, '700', 8),
-(44, 1, 4, '516', 4),
-(44, 2, 3, '387', 4),
-(45, 1, 5, '250', 6);
+(43, 7, 11, '1540', 8);
 
 -- --------------------------------------------------------
 
@@ -252,8 +245,7 @@ CREATE TABLE `zaposleni` (
 
 INSERT INTO `zaposleni` (`ZaposleniID`, `ImePrezime`, `Telefon`, `Email`) VALUES
 (1, 'Pera Peric', '0655468844', 'pera@nmt.rs'),
-(2, 'Mika Jovanovic', '0646458844', 'mika@nmt.rs'),
-(3, 'Marija Milic', '63554834', 'marija@nmt.com');
+(2, 'Mika Jovanovic', '0646458844', 'mika@nmt.rs');
 
 --
 -- Indexes for dumped tables
@@ -332,7 +324,7 @@ ALTER TABLE `nacinplacanja`
 -- AUTO_INCREMENT for table `prodavnica`
 --
 ALTER TABLE `prodavnica`
-  MODIFY `ProdavnicaID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ProdavnicaID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `proizvod`
@@ -344,7 +336,7 @@ ALTER TABLE `proizvod`
 -- AUTO_INCREMENT for table `racun`
 --
 ALTER TABLE `racun`
-  MODIFY `RacunID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `RacunID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `vrstaproizvoda`
@@ -356,7 +348,7 @@ ALTER TABLE `vrstaproizvoda`
 -- AUTO_INCREMENT for table `zaposleni`
 --
 ALTER TABLE `zaposleni`
-  MODIFY `ZaposleniID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ZaposleniID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
