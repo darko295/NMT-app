@@ -140,6 +140,7 @@ if(isset($_POST["dt_from"]) & isset($_POST["dt_to"]) & isset($_POST["store-filte
         $pdf->AddPage();
         $pdf->SetFontSize(13);
         $pdf->Ln(10);
+        $pdf->SetFillColor(230, 230, 230);
         $pdf->Cell(70,10,'',0,0,'C');
         $pdf->Cell(50,10,'Pregled svih transakcija',"B",0,'C');
         $pdf->Cell(70,10,'',0,0,'C');
@@ -179,7 +180,7 @@ if(isset($_POST["dt_from"]) & isset($_POST["dt_to"]) & isset($_POST["store-filte
             $pdf->Cell(3, 10, '', 0, 0, 'C', true);
             $pdf->Cell(40,10,substr($row-> DatumKreiranja, 0, -3), 0, 0, 'C', true);
             $pdf->Cell(8, 10, '', 0, 0, 'C', true);
-            $pdf->Cell(30, 10, $row -> NacinPlacanja, "R", 0, 'C',true);
+            $pdf->Cell(30, 10, $row -> NacinPlacanja, 0, 0, 'C',true);
             $pdf->Cell(12, 10, '', 0, 0, 'C', true);
             $pdf->Cell(20, 10, $row-> UkupanIznos.' din.', 0, 0, 'C', true);
             $pdf->Cell(8, 10, '', 0, 0, 'C',true);
