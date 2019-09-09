@@ -77,8 +77,6 @@ class racun
         }
     }
 
-
-
     public function update_total($bill_id, $suma){
         global $mysqli;
         $update_time = date("Y-m-d H:i:s");
@@ -94,5 +92,90 @@ class racun
         }
 
     }
+
+    public function get_min_bill_date(){
+        global $mysqli;
+        $sql = "SELECT MIN(r.DatumKreiranja) as min_dt FROM racun r";
+
+        if ($result = $mysqli->query($sql)) {
+            return $result;
+        }
+        return null;    
+    }
+
+    public function get_max_bill_date(){
+        global $mysqli;
+        $sql = "SELECT MAX(r.DatumKreiranja) as max_dt FROM racun r";
+
+        if ($result = $mysqli->query($sql)) {
+            return $result;
+        }
+        return null;    
+    }
+
+    public function filter_bills($from, $to,$store){
+        global $mysqli;
+        
+        if($store == "0"){
+            $sql = "SELECT np.Naziv as NacinPlacanja, r.RacunID, r.UkupanIznos, r.DatumKreiranja,r.Storniran, r.PoslednjeAzuriranje
+                FROM nacinplacanja np JOIN racun r ON np.NacinPlacanjaID=r.NacinPlacanjaID WHERE DatumKreiranja >= '".$from."' AND 
+                DatumKreiranja <= '".$to."' ORDER BY r.DatumKreiranja DESC";  
+        }else{
+            $sql = "SELECT np.Naziv as NacinPlacanja, r.RacunID, r.UkupanIznos, r.DatumKreiranja,r.Storniran, r.PoslednjeAzuriranje
+                FROM nacinplacanja np JOIN racun r ON np.NacinPlacanjaID=r.NacinPlacanjaID WHERE DatumKreiranja >= '".$from."' AND 
+                DatumKreiranja <= '".$to."' AND r.ZaposleniID IN (SELECT p.ZaposleniID FROM prodavac p JOIN prodavnica pr ON p.ProdavnicaID = pr.ProdavnicaID WHERE pr.ProdavnicaID = ".$store.") ORDER BY r.DatumKreiranja DESC";    
+        }
+
+        if ($result = $mysqli->query($sql)) {
+            return $result;
+        }
+        return null;
+    }
+
+
+    public function get_stats($from, $to,$store){
+        global $mysqli;
+        
+        if($store == "0"){
+            $sql = "SELECT np.Naziv as NacinPlacanja, COUNT(np.Naziv) AS BrojTransakcija, SUM(r.UkupanIznos) AS Iznos 
+            FROM racun r JOIN nacinplacanja np ON r.NacinPlacanjaID = np.NacinPlacanjaID WHERE DatumKreiranja >= '".$from."' AND 
+                DatumKreiranja <= '".$to."' GROUP BY np.Naziv";
+        }else{
+             $sql = "SELECT np.Naziv as NacinPlacanja, COUNT(np.Naziv) AS BrojTransakcija, SUM(r.UkupanIznos) AS Iznos 
+            FROM racun r JOIN nacinplacanja np ON r.NacinPlacanjaID = np.NacinPlacanjaID WHERE DatumKreiranja >= '".$from."' AND 
+                DatumKreiranja <= '".$to."' AND r.ZaposleniID IN (SELECT p.ZaposleniID FROM prodavac p JOIN prodavnica pr ON p.ProdavnicaID = pr.ProdavnicaID
+                WHERE pr.ProdavnicaID = ".$store.") GROUP BY np.Naziv";
+        }
+
+        if ($result = $mysqli->query($sql)) {
+            return $result;
+        }
+        return null;
+    }
+
+
+    public function get_best_selling_cat($from, $to,$store){
+        global $mysqli;
+
+         if($store == "0"){
+
+         $sql = "SELECT vp.Naziv as Kategorija, SUM(sr.Kolicina) as Kolicina
+          FROM racun r JOIN stavkaracuna sr ON r.RacunID = sr.RacunID JOIN proizvod p ON sr.ProizvodID = p.ProizvodID JOIN
+          vrstaproizvoda vp ON p.VrstaProizvodaID = vp.VrstaProizvodaID WHERE DatumKreiranja >= '".$from."' AND 
+                DatumKreiranja <= '".$to."' GROUP BY vp.VrstaProizvodaID";
+    }else{
+         $sql = "SELECT vp.Naziv as Kategorija, SUM(sr.Kolicina) as Kolicina
+          FROM racun r JOIN stavkaracuna sr ON r.RacunID = sr.RacunID JOIN proizvod p ON sr.ProizvodID = p.ProizvodID JOIN
+          vrstaproizvoda vp ON p.VrstaProizvodaID = vp.VrstaProizvodaID WHERE DatumKreiranja >= '".$from."' AND 
+                DatumKreiranja <= '".$to."'  AND r.ZaposleniID IN (SELECT p.ZaposleniID FROM prodavac p JOIN prodavnica pr ON p.ProdavnicaID = pr.ProdavnicaID
+                WHERE pr.ProdavnicaID = ".$store.") GROUP BY vp.VrstaProizvodaID";
+    }
+
+    if ($result = $mysqli->query($sql)) {
+            return $result;
+        }
+        return null;
+}
+
 
 }

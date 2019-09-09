@@ -22,9 +22,9 @@ function login() {
                 if (result === "1") {
                     $("#failed-login").html("Redirecting to main page...");
                     $("#loader").show();
-                    setTimeout(' window.location.href = "index.php"; ', 3000);
+                    setTimeout('window.location.href = "index.php"; ', 3000);
                 } else {
-                    alert(result)
+                    alert("Pogrešni podaci! Proverite kolonu Active u tabeli prodavac.");
                     $("#failed-login").html("Wrong credentials!");
 
                 }

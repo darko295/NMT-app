@@ -7,6 +7,9 @@ session_start();
 include "./class/racun.php";
 $racun = new racun();
 
+include "./class/prodavnica.php";
+$prodavnica = new prodavnica();
+
 if (isset($_SESSION['username'])) {
     $current = $_SESSION['username'];
 }else{
@@ -25,7 +28,7 @@ if (isset($_SESSION['username'])) {
     <!-- Bootstrap core CSS -->
     <link href="vendor/css/style-bill-preview.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css">
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/js/bill_preview.js"></script>
 
@@ -131,6 +134,61 @@ if (isset($_SESSION['username'])) {
         });
 
 
+    function filtriraj(){
+        var store = $("#store-filter").val();
+        var dt_from = $("#datetime-from").val();
+        var dt_to = $("#datetime-to").val();
+        dt_from = dt_from.replace("T", " ");
+        dt_to = dt_to.replace("T", " ");
+            
+                 $.ajax({
+                    type: "GET",
+                    url: "controllers/filter.php ",
+                    data: {
+                        store: store,
+                        dt_from: dt_from,
+                        dt_to: dt_to
+                    },
+                    success: function (data) {
+                        //if(data === "1"){
+                            $("#pregled-racuna").html(data);
+                            // $("#row-"+bill_id).remove();
+                            // location.reload();
+                        // }else{
+                        //     alert("Došlo je do greške prilikom brisanja računa!");
+                        // }
+                    }
+                });
+    }
+
+    function generisi_izvestaj(){
+        var store = $("#store-filter").val();
+        var dt_from = $("#datetime-from").val();
+        var dt_to = $("#datetime-to").val();
+        dt_from = dt_from.replace("T", " ");
+        dt_to = dt_to.replace("T", " ");
+            alert("tu sam");
+                 $.ajax({
+                    type: "GET",
+                    url: "controllers/create-report.php ",
+                    data: {
+                        store: store,
+                        dt_from: dt_from,
+                        dt_to: dt_to
+                    },
+                    success: function (data) {
+                        //if(data === "1"){
+                            // $("#pregled-racuna").html(data);
+                            // $("#row-"+bill_id).remove();
+                            // location.reload();
+                        // }else{
+                        //     alert("Došlo je do greške prilikom brisanja računa!");
+                        // }
+                    }
+                });
+    }
+
+
     </script>
 
 
@@ -183,8 +241,42 @@ if (isset($_SESSION['username'])) {
 <div class="container">
 
     <div class="row">
-        <div class="col-lg-12 text-center">
-            <h1 class="mt-5">Pregled računa:</h1>
+        <div class="col-md-12 text-center">
+
+            <h1 class="mt-5" style="padding-bottom: 10px;">Pregled računa:</h1>
+<form id="center-window" action="controllers/create-report.php" method="post">
+<div class="form-group row">
+
+<?php
+     $result = $prodavnica -> get_all_stores();
+?>
+<b><label for="store-filter" class="col-form-label filter-label">PRODAVNICA</label></b>
+<select class="form-control" name="store-filter" id="store-filter">
+    <option selected value="0">Sve radnje</option>
+     <?php while ($row = $result -> fetch_object()){ ?>
+          <option value="<?php echo $row-> ProdavnicaID; ?>"><?php echo $row-> Naziv; ?></option>
+     <?php } ?>
+</select>
+
+    <?php
+        error_reporting(0); 
+        $min = $racun -> get_min_bill_date() -> fetch_object();
+        $max = $racun -> get_max_bill_date() -> fetch_object();
+        $min_formatted = substr(str_replace(" ", "T", $min -> min_dt), 0, -3);
+        $max_formatted = substr(str_replace(" ", "T", $max -> max_dt), 0, -3);
+        $max_selectable = date("Y-m-d H:i");
+        $max_selectable = str_replace(" ", "T", $max_selectable);
+    ?>
+
+    <b><label for="datetime-local-input" class="col-form-label filter-label">OD</label></b>
+    <input class="form-control filter-input" name="dt_from" type="datetime-local" value="<?php echo $min_formatted; ?>" id="datetime-from" min="<?php echo $min_formatted; ?>" >
+    <b><label for="datetime-local-input" class="col-form-label filter-label">DO</label></b>
+    <input class="form-control filter-input" name="dt_to" type="datetime-local" value="<?php echo $max_selectable; ?>" id="datetime-to" max ="<?php echo $max_selectable; ?>">
+    <button type="button" class="btn btn-secondary filter-button" onclick="filtriraj()">Filtriraj</button>
+    <button type="button" class="btn btn-danger filter-cancel"><i class="fas fa-times"></i></button>
+    <button type="submit" class="btn btn-success report-button" >Generiši izveštaj</button>
+</div>
+</form>
             <?php
             $result = $racun -> get_all_bills();
 
@@ -214,13 +306,13 @@ if (isset($_SESSION['username'])) {
                 <tr id="<?php echo "row-" . $row->RacunID; ?>">
 
                     <td><?php echo $row -> RacunID; ?></td>
-                    <td><?php echo $row -> DatumKreiranja; ?> </td>
+                    <td><?php echo substr($row -> DatumKreiranja, 0, -3); ?> </td>
                     <?php
                     if(is_null($row -> PoslednjeAzuriranje)){
                         ?>
                         <td><?php echo "---"; ?> </td>
                     <?php }else{ ?>
-                        <td><?php echo $row -> PoslednjeAzuriranje; ?> </td>
+                        <td><?php echo substr($row -> PoslednjeAzuriranje, 0, -3); ?> </td>
                     <?php } ?>
                     <td><?php echo $row -> NacinPlacanja; ?></td>
                     <td><?php echo $row -> UkupanIznos. " din."; ?></td>
@@ -252,6 +344,7 @@ if (isset($_SESSION['username'])) {
             ?>
 
         </div>
+        
     </div>
 
 <!--    MODAL    -->
@@ -270,9 +363,35 @@ if (isset($_SESSION['username'])) {
 <script>
     $(function(){
     $("#myModal").on('hide.bs.modal', function () {
-        //alert("Reagujem");
-        location.reload();
+        var store = $("#store-filter").val();
+        var dt_from = $("#datetime-from").val();
+        var dt_to = $("#datetime-to").val();
+        dt_from = dt_from.replace("T", " ");
+        dt_to = dt_to.replace("T", " ");
+            
+                 $.ajax({
+                    type: "GET",
+                    url: "controllers/filter.php ",
+                    data: {
+                        store: store,
+                        dt_from: dt_from,
+                        dt_to: dt_to
+                    },
+                    success: function (data) {
+                        //if(data === "1"){
+                            $("#pregled-racuna").html(data);
+                            // $("#row-"+bill_id).remove();
+                            // location.reload();
+                        // }else{
+                        //     alert("Došlo je do greške prilikom brisanja računa!");
+                        // }
+                    }
+                });
     });
+    });
+
+    $(".filter-cancel").on('click', function(){
+        location.reload();
     });
 </script>
 

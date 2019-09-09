@@ -26,7 +26,7 @@ if(isset($_GET["bill_id"])) {
     } else {
         echo '<div class="modal-header" style="position:relative">';
         echo '<button type="button" class="close" data-dismiss="modal" style="position: absolute; top: 10px; right:10px">&times;</button>';
-        echo ' <h4 class="modal-title left">Račun: '.$bill_id .', broj stavki: ' . $result->num_rows . '</h4></div>';
+        echo ' <h4 class="modal-title left">Račun: '. $bill_id .', broj stavki: ' . $result->num_rows . '</h4></div>';
         echo '<div class="modal-body">';
         echo '<div class="table-responsive">';
         echo '<table id = "stavke-table" style="width: 100%;" class="table-bordered table-responsive table-hover">';
@@ -45,7 +45,7 @@ if(isset($_GET["bill_id"])) {
             echo '<td><div class="row_data"  id = "kolicina">' . $row->Kolicina . '</div></td>';
             echo '<td><div  id = "cena">' . $row->Cena . '</div></td>';
             echo '<td><div  id = "iznos">' . $row->Iznos . '</div></td>';
-            echo '<td><div><button class="btn btn-danger" onclick="obrisi_stavku(this.id)" id="'.'remove-'. $row -> RacunID .'-'.$row ->RBStavke .'">Obriši</button></div></td>';
+            echo '<td><div><button class="btn btn-danger" onclick="obrisi_stavku(this.id)" id="'.'remove-'. $row -> RacunID .'-'.$row -> RBStavke .'">Obriši</button></div></td>';
             echo '</tr>';
 
 

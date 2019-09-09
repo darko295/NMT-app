@@ -6,3 +6,25 @@
         max-width: 800px !important;
         margin: 1.75rem auto;
 }
+.filter-input{
+	width: 18% !important;	
+	padding-left: 4px !important;
+	padding-right: 4px !important;
+}
+.filter-label{
+	padding-left: 16px !important;
+	padding-right: 12px !important;
+}
+.filter-button{
+	margin-left: 12px !important;
+}
+.report-button{
+	margin-left: 28px !important;
+}
+.filter-cancel{
+	margin-left: 3px !important;
+}
+#store-filter{
+	width: 12% !important;	
+	padding-left: 4px !important;
+}
